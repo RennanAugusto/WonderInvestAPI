@@ -1,0 +1,15 @@
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\bin\Debug\net5.0\Wonder.Domain.deps.json
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\bin\Debug\net5.0\Wonder.Domain.runtimeconfig.json
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\bin\Debug\net5.0\Wonder.Domain.runtimeconfig.dev.json
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\bin\Debug\net5.0\Wonder.Domain.dll
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\bin\Debug\net5.0\ref\Wonder.Domain.dll
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\bin\Debug\net5.0\Wonder.Domain.pdb
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\Wonder.Domain.csprojAssemblyReference.cache
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\Wonder.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\Wonder.Domain.AssemblyInfoInputs.cache
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\Wonder.Domain.AssemblyInfo.cs
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\Wonder.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\Wonder.Domain.dll
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\ref\Wonder.Domain.dll
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\Wonder.Domain.pdb
+C:\Users\Renna\RiderProjects\WonderInvestAPI2.0\WonderInvestAPI\Wonder.Domain\obj\Debug\net5.0\Wonder.Domain.genruntimeconfig.cache

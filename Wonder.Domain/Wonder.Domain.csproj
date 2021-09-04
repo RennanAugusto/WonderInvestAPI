@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Class1.cs" />
+      <Compile Remove="Model\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Model\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Model\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Interfaces" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DotNurse.Injector.AspNetCore" Version="2.3.1" />
+      <PackageReference Include="EntityFramework" Version="6.4.4" />
+      <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.9">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.9">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+</Project>
