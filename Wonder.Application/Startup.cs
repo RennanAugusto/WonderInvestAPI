@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -13,7 +14,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Wonder.Domain.DomainServices;
+using Wonder.Domain.Interfaces.Repository;
 using Wonder.Infra.Data.Context;
+using Wonder.Infra.Data.Repository;
+using Wonder.Service.Application;
+using Wonder.Service.Contracts;
 
 namespace Wonder.Application
 {
@@ -34,12 +40,12 @@ namespace Wonder.Application
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Wonder.Application", Version = "v1"});
             });
-        //    services.AddDbContext<PostgreSqlContext>(
-               // optionsAction => optionsAction.UseNpgsql(
-              //      Configuration.GetConnectionString("WonderConnectionString"),
-                 //   x => x.MigrationsAssembly("Wonder.Infra.Migrations")
-              //  )
-           //);
+
+            var postgresFactory = new PostgreSqlContextFactory();
+            services.AddScoped<IStockRepository, StockRepositoryImpl>();
+            services.AddScoped<IAppStockContracts, AppStockContractsImpl>();
+            services.AddScoped<StockService, StockService>();
+            services.AddDbContext<PostgreSqlContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

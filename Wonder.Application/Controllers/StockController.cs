@@ -14,12 +14,17 @@ namespace Wonder.Application.Controllers
     
     public class StockController: ControllerBase
     {
-        [InjectService] private IAppStockContracts StockService;
-        
+        private readonly IAppStockContracts _stockService;
+
+        public StockController(IAppStockContracts stockService)
+        {
+            _stockService = stockService;
+        }
+
         [HttpGet]
         public string GetStockByCode(string pCode)
         {
-            return StockService.GetByCode(pCode);
+            return _stockService.GetByCode(pCode);
         }
 
     }

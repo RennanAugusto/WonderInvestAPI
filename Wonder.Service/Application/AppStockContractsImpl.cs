@@ -8,11 +8,11 @@ namespace Wonder.Service.Application
 {
     public class AppStockContractsImpl: IAppStockContracts
     {
-        private StockService _stockService;
+        private readonly StockService _stockService;
 
-        public AppStockContractsImpl()
+        public AppStockContractsImpl(StockService pStockService)
         {
-            this._stockService = new StockService();
+            this._stockService = pStockService;
         }
         
         public string GetByCode(string pCode)

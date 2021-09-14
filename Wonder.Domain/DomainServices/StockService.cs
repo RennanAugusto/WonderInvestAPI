@@ -8,11 +8,16 @@ namespace Wonder.Domain.DomainServices
 {
     public class StockService
     {
-        [InjectService] public IStockRepository StockRepo { get; set; }
+        private readonly IStockRepository _stockRepo;
+
+        public StockService(IStockRepository stockRepo)
+        {
+            _stockRepo = stockRepo;
+        }
 
         public Stock GetStockByCode(string pCode)
         {
-            return this.StockRepo.GetByCode(pCode);
+            return _stockRepo.GetByCode(pCode);
         }
     }
 }

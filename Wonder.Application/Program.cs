@@ -25,10 +25,7 @@ namespace Wonder.Application
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-        //.UseDotNurseInjector()
-        //.ConfigureServices((_, services) =>
-        //   services.AddSingleton<IStockRepository, StockRepositoryImpl>()
-        //     .AddSingleton<IAppStockContracts, AppStockContractsImpl>());
+
 
     }
 }

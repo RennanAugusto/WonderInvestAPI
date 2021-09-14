@@ -13,15 +13,12 @@ namespace Wonder.Infra.Data.Context
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
-            
-            var builder = new DbContextOptionsBuilder<PostgreSqlContext>();
-            var connectionString =
-                "User ID=postgres; Password=root;Server=localhost;Port=5432;Database=WonderInvest;Integrated Security=true; Pooling=true;";
 
-            builder.UseNpgsql(connectionString);
+            var builder = new DbContextOptionsBuilder<PostgreSqlContext>();
+            builder.UseNpgsql(configuration.GetConnectionString("WonderConnectionString"));
 
             return new PostgreSqlContext(builder.Options);
         }
-        
+
     }
 }
