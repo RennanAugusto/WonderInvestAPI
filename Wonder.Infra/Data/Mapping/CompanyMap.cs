@@ -19,7 +19,7 @@ namespace Wonder.Infra.Data.Mapping
                 .HasColumnType("VARCHAR(100)")
                 .IsRequired();
             builder.Property(p => p.Acting)
-                .HasColumnType("VARCHAR(25)")
+                .HasConversion<int>()
                 .IsRequired();
         }
     }

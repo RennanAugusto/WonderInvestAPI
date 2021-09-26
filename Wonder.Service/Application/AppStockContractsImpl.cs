@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Wonder.Domain.DomainServices;
 using Wonder.Domain.Models;
 using Wonder.Service.Contracts;
@@ -15,12 +16,12 @@ namespace Wonder.Service.Application
             this._stockService = pStockService;
         }
         
-        public string GetByCode(string pCode)
+        public JsonResult GetByCode(string pCode)
         {
             var stock = this._stockService.GetStockByCode(pCode);
             var stockDto = ConvertClassToDto.ConvertStockClass(stock);
 
-            return JsonSerializer.Serialize(stockDto);
+            return new JsonResult(JsonSerializer.Serialize(stockDto));
         }
         
         

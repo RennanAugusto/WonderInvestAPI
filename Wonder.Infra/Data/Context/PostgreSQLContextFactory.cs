@@ -15,7 +15,9 @@ namespace Wonder.Infra.Data.Context
                 .Build();
 
             var builder = new DbContextOptionsBuilder<PostgreSqlContext>();
-            builder.UseNpgsql(configuration.GetConnectionString("WonderConnectionString"));
+            var con =
+                "User ID=postgres; Password=root;Server=localhost;Port=5432;Database=WonderInvest;Integrated Security=true; Pooling=true;";
+            builder.UseNpgsql(con);
 
             return new PostgreSqlContext(builder.Options);
         }

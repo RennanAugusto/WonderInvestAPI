@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +23,9 @@ namespace Wonder.Infra.Data.Repository
         public Stock GetByCode(string pCode)
         {
             var stock = this._postgreSqlContext.Set<Stock>().First(s => s.Code == pCode);
-            stock.Company = this._postgreSqlContext.Companies.Find(stock.CompanyId);
 
+            stock.Company = this._postgreSqlContext.Companies.Find(stock.CompanyId);
+            
             var listPriceQry = this._postgreSqlContext.PriceStocks
                 .AsNoTracking()
                 .Where(s => s.StockId == stock.Id).ToList();

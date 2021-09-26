@@ -22,7 +22,7 @@ namespace Wonder.Application.Controllers
         }
 
         [HttpGet]
-        public string GetStockByCode(string pCode)
+        public JsonResult GetStockByCode(string pCode)
         {
             return _stockService.GetByCode(pCode);
         }

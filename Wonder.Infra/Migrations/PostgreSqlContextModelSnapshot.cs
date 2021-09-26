@@ -26,9 +26,8 @@ namespace Wonder.Infra.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Acting")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR(25)");
+                    b.Property<int>("Acting")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Active")
                         .ValueGeneratedOnAdd()
@@ -59,12 +58,11 @@ namespace Wonder.Infra.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("TIMESTAMP");
 
-                    b.Property<string>("IsCloseOpen")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR(25)");
+                    b.Property<int>("IsCloseOpen")
+                        .HasColumnType("integer");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric(19,6)");
+                    b.Property<float>("Price")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("StockId")
                         .HasColumnType("integer");

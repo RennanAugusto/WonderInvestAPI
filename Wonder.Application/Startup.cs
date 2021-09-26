@@ -40,8 +40,7 @@ namespace Wonder.Application
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Wonder.Application", Version = "v1"});
             });
-
-            var postgresFactory = new PostgreSqlContextFactory();
+            
             services.AddScoped<IStockRepository, StockRepositoryImpl>();
             services.AddScoped<IAppStockContracts, AppStockContractsImpl>();
             services.AddScoped<StockService, StockService>();

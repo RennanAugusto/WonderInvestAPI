@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Mvc;
 using Wonder.Domain.Models;
 
 namespace Wonder.Service.Contracts
 {
     public interface IAppStockContracts
     {
-        string GetByCode(string pCode);
+        JsonResult GetByCode(string pCode);
     }
 }

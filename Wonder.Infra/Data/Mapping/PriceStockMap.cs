@@ -15,13 +15,13 @@ namespace Wonder.Infra.Data.Mapping
                 .HasColumnType("BOOLEAN")
                 .IsRequired();
             builder.Property(p => p.Price)
-                .HasColumnType("DECIMAL(19,6)")
+                .HasColumnType("REAL")
                 .IsRequired();
             builder.Property(p => p.Date)
                 .HasColumnType("TIMESTAMP")
                 .IsRequired();
             builder.Property(p => p.IsCloseOpen)
-                .HasColumnType("VARCHAR(25)")
+                .HasConversion<int>()
                 .IsRequired();
         }
     }
