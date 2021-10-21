@@ -3,12 +3,14 @@ using Wonder.Domain.Models;
 using Wonder.Infra.Data.Context;
 using System.Collections.Generic;
 using System;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.DependencyInjection;
+using Wonder.Domain.Shared;
+using EntityState = Microsoft.EntityFrameworkCore.EntityState;
 
 namespace Wonder.Infra.Data.Repository
 {
@@ -26,17 +28,20 @@ namespace Wonder.Infra.Data.Repository
 
             stock.Company = this._postgreSqlContext.Companies.Find(stock.CompanyId);
             
-            var listPriceQry = this._postgreSqlContext.PriceStocks
-                .AsNoTracking()
+            var listPriceQry = EntityFrameworkQueryableExtensions.AsNoTracking(this._postgreSqlContext.PriceStocks)
                 .Where(s => s.StockId == stock.Id).ToList();
 
-            stock.PricesList = new List<PriceStock>();
             foreach (var price in listPriceQry)
             {
                stock.PricesList.Add(price); 
             }
-
             return stock;
+        }
+
+        public IList<Stock> GetTop10Variations(DateTime pDate)
+        {
+            //var listStocks = this._postgreSqlContext.Stocks.FromSqlRaw("").ToList();
+            throw new NotImplementedException();
         }
 
         public IList<Stock> GetByCompanyId(int pIdCompany)
@@ -67,7 +72,7 @@ namespace Wonder.Infra.Data.Repository
         {
             try
             {
-                _postgreSqlContext.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _postgreSqlContext.Entry(obj).State = EntityState.Modified;
                 _postgreSqlContext.SaveChanges();
                 return true;
             }
@@ -99,6 +104,22 @@ namespace Wonder.Infra.Data.Repository
         public IList<Stock> Select()
         {
             return _postgreSqlContext.Set<Stock>().ToList();
+        }
+
+        public IList<Stock> GetStocksByPage(int pPage, string pCode)
+        {
+            var stocks = _postgreSqlContext.Stocks
+                .AsQueryable()
+                //.Include("Company") // WTF MAN VOU FAZER GAMB
+                .Where(s => s.Code.Contains(pCode))
+                .ToList();
+            
+            foreach (var stock in stocks)
+            {
+                stock.Company = _postgreSqlContext.Companies.Find(stock.CompanyId);
+            }
+
+            return stocks;
         }
     }
 }

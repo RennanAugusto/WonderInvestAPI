@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DotNurse.Injector.Attributes;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,11 @@ namespace Wonder.Domain.DomainServices
         public Stock GetStockByCode(string pCode)
         {
             return _stockRepo.GetByCode(pCode);
+        }
+
+        public IList<Stock> GetStocksByPage(int pPage, string pCode)
+        {
+            return _stockRepo.GetStocksByPage(pPage, pCode);
         }
     }
 }

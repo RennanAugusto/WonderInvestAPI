@@ -10,6 +10,11 @@ namespace Wonder.Service.Contracts.DTO
         }
         public string Code { get; set; }
         public string CompanyName { get; set; }
-        public List<PriceStockDto> PriceList { get; set; }
+        public List<PriceStockDto> PriceList { get; }
+    }
+
+    public class ListStocksDto : List<StockDto>
+    {
+        
     }
 }

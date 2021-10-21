@@ -4,7 +4,7 @@ using Wonder.Domain.Models;
 
 namespace Wonder.Domain.Interfaces.Repository
 {
-    public interface IBaseRepository<TEntity> where TEntity : Base
+    public interface IBaseRepository<TEntity> where TEntity : class
     {
         bool Insert(TEntity obj);
 

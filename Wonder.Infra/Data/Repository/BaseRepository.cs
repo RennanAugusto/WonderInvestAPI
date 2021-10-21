@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Wonder.Infra.Data.Repository
 {
-    public class BaseRepositoryImpl<TEntity>: IBaseRepository<TEntity> where TEntity: Base
+    public class BaseRepositoryImpl<TEntity>: IBaseRepository<TEntity> where TEntity: class
     {
         protected PostgreSqlContext _postgreSqlContext ;
 

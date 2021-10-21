@@ -20,6 +20,11 @@ using Wonder.Infra.Data.Context;
 using Wonder.Infra.Data.Repository;
 using Wonder.Service.Application;
 using Wonder.Service.Contracts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Wonder.Domain.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using Wonder.Application.Token;
 
 namespace Wonder.Application
 {
@@ -45,6 +50,38 @@ namespace Wonder.Application
             services.AddScoped<IAppStockContracts, AppStockContractsImpl>();
             services.AddScoped<StockService, StockService>();
             services.AddDbContext<PostgreSqlContext>();
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<PostgreSqlContext>();
+            
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(option =>
+                {
+                    option.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+            
+                        ValidIssuer = "Teste.Securiry.Bearer",
+                        ValidAudience = "Teste.Securiry.Bearer",
+                        IssuerSigningKey = JwtSecurityKey.Create("Secret_Key-12345678")
+                    };
+            
+                    option.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+                            return Task.CompletedTask;
+                        },
+                        OnTokenValidated = context =>
+                        {
+                            Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +101,8 @@ namespace Wonder.Application
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseDeveloperExceptionPage();
         }
     }
 }

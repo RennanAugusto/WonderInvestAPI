@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Wonder.Domain.Models;
 using Wonder.Service.Contracts.DTO;
@@ -23,6 +25,19 @@ namespace Wonder.Service.Util
             }
 
             return lStockDto;
+        }
+
+        public static ListStocksDto ConvertListStockClass(IList<Stock> pListStock)
+        {
+            ListStocksDto listStockDto = new ListStocksDto();
+            foreach (var stock in pListStock)
+            {
+                StockDto stockDto = new StockDto();
+                stockDto.Code = stock.Code;
+                stockDto.CompanyName = stock.Company.Name;
+                listStockDto.Add(stockDto);
+            }
+            return listStockDto;
         }
     }
 }

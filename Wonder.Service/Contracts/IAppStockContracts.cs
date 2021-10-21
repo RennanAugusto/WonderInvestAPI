@@ -6,5 +6,7 @@ namespace Wonder.Service.Contracts
     public interface IAppStockContracts
     {
         JsonResult GetByCode(string pCode);
+
+        string GetStocksByPage(int pPage, string pCode);
     }
 }
