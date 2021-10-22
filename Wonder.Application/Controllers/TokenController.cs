@@ -1,4 +1,8 @@
+using System;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -6,77 +10,66 @@ using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Wonder.Application.Token;
 using Wonder.Domain.Models;
+using Wonder.Service.Contracts;
+using Wonder.Service.Contracts.DTO;
 
 namespace Wonder.Application.Controllers
 {
     public class TokenController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IUserContracts _userService;
 
-        public TokenController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> usermanager)
+        public TokenController( IUserContracts userService)
         {
-            this._userManager = usermanager;
-            this._signInManager = signInManager;
+            this._userService = userService;
         }
 
         [AllowAnonymous]
         [Produces("application/json")]
         [HttpPost("/api/CreateToken")]
-        public async Task<IActionResult> CreateToken([FromBody] LoginModel.InputModel input)
+        public async Task<IActionResult> CreateToken([FromBody] LoginDTO input)
         {
-            if (string.IsNullOrWhiteSpace(input.Email) || string.IsNullOrWhiteSpace(input.Password))
-                return Unauthorized();
-
-            var result =
-                await _signInManager.PasswordSignInAsync(input.Email, input.Password, false, lockoutOnFailure: false);
-            if (result.Succeeded)
+            var result = await this._userService.GetToken(input);
+            if (result.Success)
             {
                 var token = new TokenJWTBuilder()
                     .AddSecurityKey(JwtSecurityKey.Create("Secrete_Key-12345678"))
                     .AddSubject("WonderInvest")
                     .AddIssuer("Teste.Security.Bearer")
                     .AddAudience("Teste Meu")
-                    .AddClaim("Usuario1", "1")
-                    .AddExpiry(5)
+                    .AddClaim(input.UserName, "1")
+                    .AddExpiry(10)
                     .Builder();
-
-                return Ok(token.Value);
+                result.Token = token.Value;
+                return Ok(Json(result));
             }
             else
             {
-                return Unauthorized();
+                return Unauthorized("Usuário ou senha inválidos");
             }
         }
         
         [AllowAnonymous]
         [Produces("application/json")]
         [HttpPost("/api/Register")]
-        public async Task<IActionResult> RegisterUser([FromBody] LoginModel.InputModel input)
+        public async Task<IActionResult> RegisterUser([FromBody] InputUserDto input)
         {
-            if (string.IsNullOrWhiteSpace(input.Email) || string.IsNullOrWhiteSpace(input.Password))
-                return Unauthorized();
-
-            var user = new ApplicationUser();
-            user.Email = input.Email;
-            user.UserName = input.Email;
-
-            var result = await this._userManager.CreateAsync(user, input.Password);
-            
-            if (result.Succeeded)
+            try
             {
-                return Ok("Usuario Criado");
+                var result = await this._userService.Register(input);
+                if (result.Success)
+                {
+                    return Ok(JsonSerializer.Serialize(result));
+                }
+                else
+                {
+                    return Problem(JsonSerializer.Serialize(result));
+                }
             }
-            else
+            catch (Exception)
             {
-                return Unauthorized();
+                return Problem("Erro desconhecido");
             }
-        }
-
-        [HttpGet("api/HashExample")]
-        public async Task<IActionResult> GetHash(string pValue)
-        {
-            return Ok(Encoding.ASCII.GetBytes(pValue));
         }
     }
 }

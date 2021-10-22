@@ -6,6 +6,9 @@
 
     <ItemGroup>
       <Compile Remove="Class1.cs" />
+      <Compile Remove="Contracts\IAppUserContracts.cs" />
+      <Compile Remove="Contracts\DTO\DetailResult.cs" />
+      <Compile Remove="Contracts\DTO\DatailResultUser.cs" />
     </ItemGroup>
 
     <ItemGroup>

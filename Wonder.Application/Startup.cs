@@ -25,6 +25,7 @@ using Wonder.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Wonder.Application.Token;
+using Wonder.Service.Contracts;
 
 namespace Wonder.Application
 {
@@ -48,7 +49,10 @@ namespace Wonder.Application
             
             services.AddScoped<IStockRepository, StockRepositoryImpl>();
             services.AddScoped<IAppStockContracts, AppStockContractsImpl>();
+            services.AddScoped<IUserContracts, UserContractsImpl>();
             services.AddScoped<StockService, StockService>();
+            services.AddScoped<UserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddDbContext<PostgreSqlContext>();
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<PostgreSqlContext>();
