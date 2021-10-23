@@ -6,5 +6,7 @@ namespace Wonder.Domain.Models
     {
         public string Name { get; set; }
         public Acting Acting { get; set; }
+        
+        public string LogoBase64 { get; set; }
     }
 }

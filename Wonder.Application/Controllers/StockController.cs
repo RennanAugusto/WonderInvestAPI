@@ -15,7 +15,7 @@ namespace Wonder.Application.Controllers
     [ApiController]
     [Route("[controller]")]
     
-    public class StockController: ControllerBase
+    public class StockController: Controller
     {
         private readonly IAppStockContracts _stockService;
 
@@ -40,19 +40,41 @@ namespace Wonder.Application.Controllers
             }
         }
         
-        [HttpGet]
-        [Route("StocksByPage")]
-        public string GetStocksByPage(int pPage, string pCode)
+        [HttpGet("/Stock/Paginator")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetStocksByPage(int pPage, int pCount)
         {
             try
             {
-                var stocks = _stockService.GetStocksByPage(pPage, pCode);
-                return stocks;
+                var stocks = await _stockService.GetStocksByPage(pPage, pCount);
+                return Ok(Json(stocks));
             }
             catch (Exception e)
             {
-                throw new HttpListenerException(404, "Stocks: Not Found");
+                return BadRequest("Deu ruim Raryson");
             }
         }
+        
+        // [Produces("application/json")]
+        // [HttpPost("/api/Register")]
+        // public async Task<IActionResult> RegisterUser([FromBody] InputUserDto input)
+        // {
+        //     try
+        //     {
+        //         var result = await this._userService.Register(input);
+        //         if (result.Success)
+        //         {
+        //             return Ok(JsonSerializer.Serialize(result));
+        //         }
+        //         else
+        //         {
+        //             return Problem(JsonSerializer.Serialize(result));
+        //         }
+        //     }
+        //     catch (Exception)
+        //     {
+        //         return Problem("Erro desconhecido");
+        //     }
+        // }
     }
 }

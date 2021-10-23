@@ -1,5 +1,6 @@
 using Wonder.Domain.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 namespace Wonder.Domain.Interfaces.Repository
@@ -9,7 +10,8 @@ namespace Wonder.Domain.Interfaces.Repository
         Stock GetByCode(string pCode);
         IList<Stock> GetByCompanyId(int pIdCompany);
         IList<Stock> GetByCompanyName(string pNameCompany);
-        IList<Stock> GetStocksByPage(int pPage, string pCode);
+        Task<IList<Stock>> GetStocksByPage(int pPage, int pCount);
+        int CountStocks();
 
     }
 }

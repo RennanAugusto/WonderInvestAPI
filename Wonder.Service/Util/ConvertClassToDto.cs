@@ -33,8 +33,10 @@ namespace Wonder.Service.Util
             foreach (var stock in pListStock)
             {
                 StockDto stockDto = new StockDto();
+                stockDto.Id = stock.Id;
                 stockDto.Code = stock.Code;
                 stockDto.CompanyName = stock.Company.Name;
+                stockDto.CompanyLogo64 = stock.Company.LogoBase64;
                 listStockDto.Add(stockDto);
             }
             return listStockDto;

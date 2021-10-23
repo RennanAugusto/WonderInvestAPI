@@ -21,6 +21,7 @@ namespace Wonder.Infra.Data.Mapping
             builder.Property(p => p.Acting)
                 .HasConversion<int>()
                 .IsRequired();
+            builder.Property(p => p.LogoBase64);
         }
     }
 }

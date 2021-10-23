@@ -6,6 +6,7 @@ using System;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,12 +107,11 @@ namespace Wonder.Infra.Data.Repository
             return _postgreSqlContext.Set<Stock>().ToList();
         }
 
-        public IList<Stock> GetStocksByPage(int pPage, string pCode)
+        public async Task<IList<Stock>> GetStocksByPage(int pPage, int pCount)
         {
-            var stocks = _postgreSqlContext.Stocks
-                .AsQueryable()
-                //.Include("Company") // WTF MAN VOU FAZER GAMB
-                .Where(s => s.Code.Contains(pCode))
+            var stocks =  this._postgreSqlContext.Stocks.OrderBy(s => s.Id)
+                .Skip(pCount * (pPage - 1))
+                .Take(pCount)
                 .ToList();
             
             foreach (var stock in stocks)
@@ -120,6 +120,11 @@ namespace Wonder.Infra.Data.Repository
             }
 
             return stocks;
+        }
+
+        public int CountStocks()
+        {
+            return this._postgreSqlContext.Stocks.Count();
         }
     }
 }

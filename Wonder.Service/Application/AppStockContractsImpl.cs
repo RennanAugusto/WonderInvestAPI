@@ -1,7 +1,9 @@
 using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Wonder.Domain.DomainServices;
 using Wonder.Service.Contracts;
+using Wonder.Service.Contracts.DTO;
 using Wonder.Service.Util;
 
 namespace Wonder.Service.Application
@@ -23,12 +25,18 @@ namespace Wonder.Service.Application
             return new JsonResult(JsonSerializer.Serialize(stockDto));
         }
 
-        public string GetStocksByPage(int pPage, string pCode)
+        public async Task<StockPaginationDTO> GetStocksByPage(int pPage, int pCount)
         {
-            var  listStock = this._stockService.GetStocksByPage(pPage, pCode);
+            var result = new StockPaginationDTO();
+            var  listStock = await this._stockService.GetStocksByPage(pPage, pCount);
             var dtoStocks = ConvertClassToDto.ConvertListStockClass(listStock);
-
-            return JsonSerializer.Serialize(dtoStocks);
+            result.ListStock = dtoStocks;
+            result.ActualPage = pPage;
+            result.NextPage = pPage + 1;
+            result.PreviousPage = pPage - 1;
+            result.ExistsNextPage = (pPage * pCount) < (this._stockService.CountStocks());
+            result.ExistsPreviousPage = (pPage > 1);
+            return result;
         }
     }
 }

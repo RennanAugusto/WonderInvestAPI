@@ -232,6 +232,9 @@ namespace Wonder.Infra.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("Active");
 
+                    b.Property<string>("LogoBase64")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("VARCHAR(100)");

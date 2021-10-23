@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DotNurse.Injector.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Wonder.Domain.Interfaces.Repository;
@@ -21,9 +22,14 @@ namespace Wonder.Domain.DomainServices
             return _stockRepo.GetByCode(pCode);
         }
 
-        public IList<Stock> GetStocksByPage(int pPage, string pCode)
+        public async Task<IList<Stock>> GetStocksByPage(int pPage, int pCount)
         {
-            return _stockRepo.GetStocksByPage(pPage, pCode);
+            return await _stockRepo.GetStocksByPage(pPage, pCount);
+        }
+
+        public int CountStocks()
+        {
+            return this._stockRepo.CountStocks();
         }
     }
 }

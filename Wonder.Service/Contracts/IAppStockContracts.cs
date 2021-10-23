@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Wonder.Domain.Models;
+using Wonder.Service.Contracts.DTO;
 
 namespace Wonder.Service.Contracts
 {
@@ -7,6 +9,6 @@ namespace Wonder.Service.Contracts
     {
         JsonResult GetByCode(string pCode);
 
-        string GetStocksByPage(int pPage, string pCode);
+        Task<StockPaginationDTO> GetStocksByPage(int pPage, int pCount);
     }
 }
