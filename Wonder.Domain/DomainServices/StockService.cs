@@ -22,14 +22,14 @@ namespace Wonder.Domain.DomainServices
             return _stockRepo.GetByCode(pCode);
         }
 
-        public async Task<IList<Stock>> GetStocksByPage(int pPage, int pCount)
+        public async Task<IList<Stock>> GetStocksByPage(int pPage, int pCount, string pCodeFilter)
         {
-            return await _stockRepo.GetStocksByPage(pPage, pCount);
+            return await _stockRepo.GetStocksByPage(pPage, pCount, pCodeFilter);
         }
 
-        public int CountStocks()
+        public int CountStocks(string pCodeFilter)
         {
-            return this._stockRepo.CountStocks();
+            return this._stockRepo.CountStocks(pCodeFilter);
         }
     }
 }

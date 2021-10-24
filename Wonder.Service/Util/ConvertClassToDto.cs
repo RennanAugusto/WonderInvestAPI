@@ -14,8 +14,6 @@ namespace Wonder.Service.Util
             lStockDto.Code = pStock.Code;
             lStockDto.CompanyName = pStock.Company.Name;
 
-            int I = 0;
-            
             foreach (var price in pStock.PricesList)
             {
                PriceStockDto priceDto = new PriceStockDto();
@@ -29,6 +27,7 @@ namespace Wonder.Service.Util
 
         public static ListStocksDto ConvertListStockClass(IList<Stock> pListStock)
         {
+            var rarysonbot = true;
             ListStocksDto listStockDto = new ListStocksDto();
             foreach (var stock in pListStock)
             {
@@ -36,7 +35,7 @@ namespace Wonder.Service.Util
                 stockDto.Id = stock.Id;
                 stockDto.Code = stock.Code;
                 stockDto.CompanyName = stock.Company.Name;
-                stockDto.CompanyLogo64 = stock.Company.LogoBase64;
+                stockDto.CompanyLogo64 = rarysonbot ?  "": stock.Company.LogoBase64;
                 listStockDto.Add(stockDto);
             }
             return listStockDto;

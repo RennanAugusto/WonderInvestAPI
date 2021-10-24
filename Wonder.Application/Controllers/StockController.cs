@@ -42,11 +42,11 @@ namespace Wonder.Application.Controllers
         
         [HttpGet("/Stock/Paginator")]
         [Produces("application/json")]
-        public async Task<IActionResult> GetStocksByPage(int pPage, int pCount)
+        public async Task<IActionResult> GetStocksByPage(int pPage, int pCount, string pCodeFilter)
         {
             try
             {
-                var stocks = await _stockService.GetStocksByPage(pPage, pCount);
+                var stocks = await _stockService.GetStocksByPage(pPage, pCount, pCodeFilter);
                 return Ok(Json(stocks));
             }
             catch (Exception e)

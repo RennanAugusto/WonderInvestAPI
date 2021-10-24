@@ -10,8 +10,8 @@ namespace Wonder.Domain.Interfaces.Repository
         Stock GetByCode(string pCode);
         IList<Stock> GetByCompanyId(int pIdCompany);
         IList<Stock> GetByCompanyName(string pNameCompany);
-        Task<IList<Stock>> GetStocksByPage(int pPage, int pCount);
-        int CountStocks();
+        Task<IList<Stock>> GetStocksByPage(int pPage, int pCount, string pCodeFilter);
+        int CountStocks(string pCodeFilter);
 
     }
 }

@@ -9,6 +9,6 @@ namespace Wonder.Service.Contracts
     {
         JsonResult GetByCode(string pCode);
 
-        Task<StockPaginationDTO> GetStocksByPage(int pPage, int pCount);
+        Task<StockPaginationDTO> GetStocksByPage(int pPage, int pCount, string pCodeFilter);
     }
 }

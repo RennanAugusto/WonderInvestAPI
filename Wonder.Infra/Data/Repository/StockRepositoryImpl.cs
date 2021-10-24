@@ -107,9 +107,11 @@ namespace Wonder.Infra.Data.Repository
             return _postgreSqlContext.Set<Stock>().ToList();
         }
 
-        public async Task<IList<Stock>> GetStocksByPage(int pPage, int pCount)
+        public async Task<IList<Stock>> GetStocksByPage(int pPage, int pCount, string pCodeFilter)
         {
-            var stocks =  this._postgreSqlContext.Stocks.OrderBy(s => s.Id)
+            var stocks =  this._postgreSqlContext.Stocks
+                .OrderBy(s => s.Code)
+                .Where(s => s.Code.ToUpper().StartsWith(pCodeFilter != "" && pCodeFilter != null? pCodeFilter.Trim().ToUpper(): s.Code.ToUpper()))
                 .Skip(pCount * (pPage - 1))
                 .Take(pCount)
                 .ToList();
@@ -122,9 +124,11 @@ namespace Wonder.Infra.Data.Repository
             return stocks;
         }
 
-        public int CountStocks()
+        public int CountStocks(string pCodeFilter)
         {
-            return this._postgreSqlContext.Stocks.Count();
+            return this._postgreSqlContext.Stocks
+                .Where(s => s.Code.ToUpper().StartsWith(pCodeFilter != "" && pCodeFilter != null? pCodeFilter.Trim().ToUpper(): s.Code.ToUpper()))
+                .Count();
         }
     }
 }
