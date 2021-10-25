@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DotNurse.Injector.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -40,6 +41,7 @@ namespace Wonder.Application.Controllers
             }
         }
         
+        [Authorize]
         [HttpGet("/Stock/Paginator")]
         [Produces("application/json")]
         public async Task<IActionResult> GetStocksByPage(int pPage, int pCount, string pCodeFilter)

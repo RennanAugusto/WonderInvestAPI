@@ -9,7 +9,8 @@ namespace Wonder.Service.Contracts.DTO
         public string UserName { get; set; }
         public string Email { get; set; }
         public IList<string> Errors { get; set; }
-
+        
+        public string Role { get; set; }
         public DetailResultUser()
         {
             this.Errors = new List<string>();

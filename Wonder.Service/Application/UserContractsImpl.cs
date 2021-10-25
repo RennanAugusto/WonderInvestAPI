@@ -85,6 +85,7 @@ namespace Wonder.Service.Application
                 
                 if (resultRegister.Succeeded)
                 {
+                    
                     result.Success = true;
                     result.Detail = "Usuario criado com sucesso";
                 }
@@ -163,5 +164,6 @@ namespace Wonder.Service.Application
             
             return errors;
         }
+        
     }
 }

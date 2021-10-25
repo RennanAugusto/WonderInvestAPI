@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,36 +57,56 @@ namespace Wonder.Application
             services.AddDbContext<PostgreSqlContext>();
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<PostgreSqlContext>();
-            
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(option =>
+
+            var key = Encoding.ASCII.GetBytes("Secret_Key-12345678");
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    option.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-            
-                        ValidIssuer = "Teste.Securiry.Bearer",
-                        ValidAudience = "Teste.Securiry.Bearer",
-                        IssuerSigningKey = JwtSecurityKey.Create("Secret_Key-12345678")
-                    };
-            
-                    option.Events = new JwtBearerEvents
-                    {
-                        OnAuthenticationFailed = context =>
-                        {
-                            Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
-                            return Task.CompletedTask;
-                        },
-                        OnTokenValidated = context =>
-                        {
-                            Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //     .AddJwtBearer(option =>
+            //     {
+            //         option.SaveToken = true;
+            //         option.TokenValidationParameters = new TokenValidationParameters
+            //         {
+            //             ValidateIssuer = false,
+            //             ValidateAudience = false,
+            //             ValidateLifetime = true,
+            //             ValidateIssuerSigningKey = true,
+            //
+            //             ValidIssuer = "Teste.Securiry.Bearer",
+            //             ValidAudience = "Teste.Securiry.Bearer",
+            //             IssuerSigningKey = JwtSecurityKey.Create("Secret_Key-12345678")
+            //             
+            //         };
+            //
+            //         option.Events = new JwtBearerEvents
+            //         {
+            //             OnAuthenticationFailed = context =>
+            //             {
+            //                 Console.WriteLine("OnAuthenticationFailed: " + context.Exception.Message);
+            //                 return Task.CompletedTask;
+            //             },
+            //             OnTokenValidated = context =>
+            //             {
+            //                 Console.WriteLine("OnTokenValidated: " + context.SecurityToken);
+            //                 return Task.CompletedTask;
+            //             }
+            //         };
+            //     });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,7 +122,8 @@ namespace Wonder.Application
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

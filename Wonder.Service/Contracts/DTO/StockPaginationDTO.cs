@@ -9,6 +9,8 @@ namespace Wonder.Service.Contracts.DTO
         public int NextPage { get; set; }
         public bool ExistsNextPage { get; set; }
         public bool ExistsPreviousPage { get; set; }
+        
+        public int TotalPages { get; set; }
         public IList<StockDto> ListStock {get; set; }
     }
 }

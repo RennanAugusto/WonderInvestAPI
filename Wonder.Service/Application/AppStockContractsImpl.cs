@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -28,13 +29,16 @@ namespace Wonder.Service.Application
         public async Task<StockPaginationDTO> GetStocksByPage(int pPage, int pCount, string pCodeFilter)
         {
             var result = new StockPaginationDTO();
-            var  listStock = await this._stockService.GetStocksByPage(pPage, pCount, pCodeFilter);
+            var listStock = await this._stockService.GetStocksByPage(pPage, pCount, pCodeFilter);
+            var totalStocks = this._stockService.CountStocks(pCodeFilter);
             var dtoStocks = ConvertClassToDto.ConvertListStockClass(listStock);
             result.ListStock = dtoStocks;
             result.ActualPage = pPage;
             result.NextPage = pPage + 1;
             result.PreviousPage = pPage - 1;
-            result.ExistsNextPage = (pPage * pCount) < (this._stockService.CountStocks(pCodeFilter));
+            result.ExistsNextPage = (pPage * pCount) < totalStocks;
+            //decimal totalPages = Decimal.Divide(Convert.ToDecimal(totalStocks), Convert.ToDecimal(pCount));
+            //result.TotalPages = System.Math.Ceiling(Convert.ToInt32(totalPages));
             result.ExistsPreviousPage = (pPage > 1);
             return result;
         }

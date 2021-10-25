@@ -1,6 +1,8 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
 using Wonder.Application.Token;
 using Wonder.Domain.Models;
 using Wonder.Service.Contracts;
@@ -33,14 +36,15 @@ namespace Wonder.Application.Controllers
             if (result.Success)
             {
                 var token = new TokenJWTBuilder()
-                    .AddSecurityKey(JwtSecurityKey.Create("Secrete_Key-12345678"))
-                    .AddSubject("WonderInvest")
+                    .AddSecurityKey(JwtSecurityKey.Create("Secret_Key-12345678"))
+                    .AddKeyStr("Secret_Key-12345678")
+                    .AddSubject(result.Id)
                     .AddIssuer("Teste.Security.Bearer")
                     .AddAudience("Teste Meu")
                     .AddClaim(input.UserName, "1")
-                    .AddExpiry(10)
+                    .AddExpiry(1)
                     .Builder();
-                result.Token = token.Value;
+                result.Token = token;
                 return Ok(Json(result));
             }
             else
@@ -71,5 +75,14 @@ namespace Wonder.Application.Controllers
                 return Problem("Erro desconhecido");
             }
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("authenticated")]
+        public string Authenticared()
+        {
+            string userId = User.FindFirst(ClaimTypes.Sid).Value;
+            return String.Format("Autenticado {0}", userId);
+        } 
     }
 }

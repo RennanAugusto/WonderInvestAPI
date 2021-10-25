@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Wonder.Application.Token
@@ -15,6 +16,7 @@ namespace Wonder.Application.Token
         private string _audience = "";
         private Dictionary<string, string> _claims = new Dictionary<string, string>();
         private int _expiryInMinutes = 5;
+        private string _keyStr;
 
         public TokenJWTBuilder AddSecurityKey(SecurityKey securityKey)
         {
@@ -25,6 +27,12 @@ namespace Wonder.Application.Token
         public TokenJWTBuilder AddSubject(string subject)
         {
             this._subject = subject;
+            return this;
+        }
+        
+        public TokenJWTBuilder AddKeyStr(string key)
+        {
+            this._keyStr = key;
             return this;
         }
 
@@ -73,28 +81,47 @@ namespace Wonder.Application.Token
                 throw new ArgumentNullException("Audience");
         }
         
-        public TokenJWT Builder()
+        public string Builder()
         {
             EnsureArguments();
 
-            var claims = new List<Claim>
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(this._keyStr);
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
-                new Claim(JwtRegisteredClaimNames.Sub,this._subject),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            }.Union(this._claims.Select(item => new Claim(item.Key, item.Value)));
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Sid,this._subject),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                }),
+                
+                Expires = DateTime.UtcNow.AddMinutes(this._expiryInMinutes),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
 
-            var token = new JwtSecurityToken(
-                issuer: this._issuer,
-                audience: this._audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_expiryInMinutes),
-                signingCredentials: new SigningCredentials(
-                    this._securityKey,
-                    SecurityAlgorithms.HmacSha256)
+            // var claims = new List<Claim>
+            // {
+            //     new Claim(JwtRegisteredClaimNames.Sub,this._subject),
+            //     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            // }.Union(this._claims.Select(item => new Claim(item.Key, item.Value)));
 
-            );
+            // var token = new JwtSecurityToken(
+            //     issuer: this._issuer,
+            //     audience: this._audience,
+            //     claims: claims,
+            //     expires: DateTime.UtcNow.AddMinutes(_expiryInMinutes),
+            //     signingCredentials: new SigningCredentials(
+            //         this._securityKey,
+            //         SecurityAlgorithms.HmacSha256)
+            //
+            // );
+            // var token2 = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return new TokenJWT(token);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+
+            //return new TokenJWT(token);
 
         }
 
