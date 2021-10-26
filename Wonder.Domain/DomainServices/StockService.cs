@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DotNurse.Injector.Attributes;
@@ -11,10 +12,12 @@ namespace Wonder.Domain.DomainServices
     public class StockService
     {
         private readonly IStockRepository _stockRepo;
+        private readonly IStockFavoriteRepository _favoriteStockRepo;
 
-        public StockService(IStockRepository stockRepo)
+        public StockService(IStockRepository stockRepo, IStockFavoriteRepository favoriteRepo)
         {
             _stockRepo = stockRepo;
+            _favoriteStockRepo = favoriteRepo;
         }
 
         public Stock GetStockByCode(string pCode)
@@ -30,6 +33,32 @@ namespace Wonder.Domain.DomainServices
         public int CountStocks(string pCodeFilter)
         {
             return this._stockRepo.CountStocks(pCodeFilter);
+        }
+
+        public async Task<bool> PostStockFavorite(StockFavorites favoriteStock)
+        {
+            try
+            {
+                if (favoriteStock.Id > 0)
+                    this._favoriteStockRepo.Update(favoriteStock);
+                else
+                {   
+                    var stock = this._favoriteStockRepo.GetByIdUserIdStock(favoriteStock.IdWonderUsers, favoriteStock.StockId);
+                    if (stock != null)
+                        return true;
+                    this._favoriteStockRepo.Insert(favoriteStock);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível adicionar a ação aos favoritos: " + e.Message);
+            }
+        }
+
+        public async Task<IList<StockFavorites>> GetFavorites(string pIdUser)
+        {
+            return await this._favoriteStockRepo.GetStockFavorite(pIdUser);
         }
     }
 }

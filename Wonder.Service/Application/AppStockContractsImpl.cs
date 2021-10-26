@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,25 @@ namespace Wonder.Service.Application
             //result.TotalPages = System.Math.Ceiling(Convert.ToInt32(totalPages));
             result.ExistsPreviousPage = (pPage > 1);
             return result;
+        }
+
+        public async Task<bool> PostFavoriteStock(PostFavoriteDTO postFavorite)
+        {
+            return await this._stockService.PostStockFavorite(ConvertClassToDto.ConvertFavoritesDTOToClass(postFavorite));
+        }
+
+        public async Task<IList<GetFavoriteDTO>> GetFavorites(string pIdUser)
+        {
+            var favorites = await this._stockService.GetFavorites(pIdUser);
+            var favoritesDTO = ConvertClassToDto.ConvertListStockFavoriteToGetDTO(favorites);
+            foreach (var fav in favoritesDTO)
+            {
+                var percentual = (fav.Stock.PriceList[1].Price - fav.Stock.PriceList[0].Price) / 
+                                 fav.Stock.PriceList[0].Price * 100;
+                fav.Stock.Percentual = percentual;
+            }
+
+            return favoritesDTO;
         }
     }
 }

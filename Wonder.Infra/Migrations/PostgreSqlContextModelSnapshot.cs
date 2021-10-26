@@ -274,6 +274,36 @@ namespace Wonder.Infra.Migrations
                     b.ToTable("PriceStock");
                 });
 
+            modelBuilder.Entity("Wonder.Domain.Models.RlcWalletTicket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IdTicket")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("SalesDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("TypeTicket")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RlcWalletTicketMap");
+                });
+
             modelBuilder.Entity("Wonder.Domain.Models.Stock", b =>
                 {
                     b.Property<int>("Id")
@@ -301,6 +331,47 @@ namespace Wonder.Infra.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Stock");
+                });
+
+            modelBuilder.Entity("Wonder.Domain.Models.StockFavorites", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("IdWonderUsers")
+                        .HasColumnType("text");
+
+                    b.Property<int>("StockId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StockId");
+
+                    b.ToTable("StockFavorites");
+                });
+
+            modelBuilder.Entity("Wonder.Domain.Models.Wallet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("IdWonderUsers")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Wallet");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -372,6 +443,17 @@ namespace Wonder.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Wonder.Domain.Models.StockFavorites", b =>
+                {
+                    b.HasOne("Wonder.Domain.Models.Stock", "Stock")
+                        .WithMany()
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stock");
                 });
 
             modelBuilder.Entity("Wonder.Domain.Models.Stock", b =>

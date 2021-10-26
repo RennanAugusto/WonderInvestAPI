@@ -11,9 +11,11 @@ namespace Wonder.Service.Util
         public static StockDto ConvertStockClass(Stock pStock)
         {
             StockDto lStockDto = new StockDto();
+            lStockDto.Id = pStock.Id;
             lStockDto.Code = pStock.Code;
             lStockDto.CompanyName = pStock.Company.Name;
-
+            lStockDto.CompanyLogo64 =  pStock.Company.LogoBase64;
+            
             foreach (var price in pStock.PricesList)
             {
                PriceStockDto priceDto = new PriceStockDto();
@@ -27,18 +29,44 @@ namespace Wonder.Service.Util
 
         public static ListStocksDto ConvertListStockClass(IList<Stock> pListStock)
         {
-            var rarysonbot = true;
             ListStocksDto listStockDto = new ListStocksDto();
             foreach (var stock in pListStock)
             {
-                StockDto stockDto = new StockDto();
-                stockDto.Id = stock.Id;
-                stockDto.Code = stock.Code;
-                stockDto.CompanyName = stock.Company.Name;
-                stockDto.CompanyLogo64 = rarysonbot ?  "": stock.Company.LogoBase64;
-                listStockDto.Add(stockDto);
+                listStockDto.Add(ConvertStockClass(stock));
             }
             return listStockDto;
+        }
+
+        public static StockFavorites ConvertFavoritesDTOToClass(PostFavoriteDTO postFavoriteDTO)
+        {
+            var favorite = new StockFavorites();
+            favorite.Id = postFavoriteDTO.IdFavorite;
+            favorite.IdWonderUsers = postFavoriteDTO.GetUser();
+            favorite.StockId = postFavoriteDTO.IdStock;
+            favorite.Active = postFavoriteDTO.Active;
+            return favorite;
+        }
+
+        public static GetFavoriteDTO ConvertStockFavoriteToGetDTO(StockFavorites favorite)
+        {
+            var favoriteDTo = new GetFavoriteDTO();
+            favoriteDTo.IdFavorite = favorite.Id;
+            favoriteDTo.IdStock = favorite.StockId;
+            favoriteDTo.IdUser = favorite.IdWonderUsers;
+            favoriteDTo.Stock = ConvertStockClass(favorite.Stock);
+            favoriteDTo.Active = favorite.Active;
+            return favoriteDTo;
+        }
+
+        public static IList<GetFavoriteDTO> ConvertListStockFavoriteToGetDTO(IList<StockFavorites> favoritesList)
+        {
+            var listFavoritosDTO = new List<GetFavoriteDTO>();
+            foreach (var fav in favoritesList)
+            {
+               listFavoritosDTO.Add(ConvertStockFavoriteToGetDTO(fav)); 
+            }
+
+            return listFavoritosDTO;
         }
     }
 }

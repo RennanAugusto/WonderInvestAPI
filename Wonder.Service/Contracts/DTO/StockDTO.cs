@@ -8,8 +8,9 @@ namespace Wonder.Service.Contracts.DTO
         public int Id { get; set; }
         public string Code { get; set; }
         public string CompanyName { get; set; }
-        
         public string CompanyLogo64 { get; set; }
+        
+        public float Percentual { get; set; }
         public List<PriceStockDto> PriceList { get; }
         public StockDto()
         {

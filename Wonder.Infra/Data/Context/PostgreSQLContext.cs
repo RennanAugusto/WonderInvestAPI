@@ -31,8 +31,9 @@ namespace Wonder.Infra.Data.Context
         public Microsoft.EntityFrameworkCore.DbSet<Company> Companies { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<PriceStock> PriceStocks { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<Stock> Stocks { get; set; }
-        
         public Microsoft.EntityFrameworkCore.DbSet<ApplicationUser> Users { get; set; }
+        
+        public Microsoft.EntityFrameworkCore.DbSet<StockFavorites> StockFavorites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -41,6 +42,9 @@ namespace Wonder.Infra.Data.Context
             builder.Entity<PriceStock>(new PriceStockMap().Configure);
             builder.Entity<Company>(new CompanyMap().Configure);
             builder.Entity<ApplicationUser>(new UserMap().Configure);
+            builder.Entity<Wallet>(new WalletMap().Configure);
+            builder.Entity<RlcWalletTicket>(new RlcWalletTicketMap().Configure);
+            builder.Entity<StockFavorites>(new FavoritesMap().Configure);
         }
     }
 }

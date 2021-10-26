@@ -42,7 +42,7 @@ namespace Wonder.Application.Controllers
                     .AddIssuer("Teste.Security.Bearer")
                     .AddAudience("Teste Meu")
                     .AddClaim(input.UserName, "1")
-                    .AddExpiry(1)
+                    .AddExpiry(600)
                     .Builder();
                 result.Token = token;
                 return Ok(Json(result));

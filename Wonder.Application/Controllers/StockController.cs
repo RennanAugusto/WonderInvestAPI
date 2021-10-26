@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DotNurse.Injector.Attributes;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Wonder.Service.Contracts;
+using Wonder.Service.Contracts.DTO;
 
 namespace Wonder.Application.Controllers
 {    
@@ -57,26 +59,44 @@ namespace Wonder.Application.Controllers
             }
         }
         
-        // [Produces("application/json")]
-        // [HttpPost("/api/Register")]
-        // public async Task<IActionResult> RegisterUser([FromBody] InputUserDto input)
-        // {
-        //     try
-        //     {
-        //         var result = await this._userService.Register(input);
-        //         if (result.Success)
-        //         {
-        //             return Ok(JsonSerializer.Serialize(result));
-        //         }
-        //         else
-        //         {
-        //             return Problem(JsonSerializer.Serialize(result));
-        //         }
-        //     }
-        //     catch (Exception)
-        //     {
-        //         return Problem("Erro desconhecido");
-        //     }
-        // }
+        [Authorize]
+        [HttpPost("/Stock/PostFavorite")]
+        [Produces("application/json")]
+        public async Task<IActionResult> PostFavorite([FromBody] PostFavoriteDTO postFavorite)
+        {
+            try
+            {
+                var idUser = User.FindFirst(ClaimTypes.Sid).Value;
+                postFavorite.SetUser(idUser);
+                var result = await  this._stockService.PostFavoriteStock(postFavorite);
+
+                if (result)
+                    return Ok("Success");
+                else
+                    return BadRequest("Vixe");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Error: " + e.Message);
+            }
+        }
+        
+        [Authorize]
+        [HttpGet("/Stock/GetFavorites")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetFavorites()
+        {
+            try
+            {
+                var idUser = User.FindFirst(ClaimTypes.Sid).Value;
+                var result = await  this._stockService.GetFavorites(idUser);
+                return Ok(Json(result));
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Error: " + e.Message);
+            }
+        }
+ 
     }
 }
