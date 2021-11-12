@@ -287,21 +287,21 @@ namespace Wonder.Infra.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("integer");
 
+                    b.Property<float>("AveragePrice")
+                        .HasColumnType("real");
+
                     b.Property<int>("IdTicket")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("PurchaseDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime>("SalesDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("TypeTicket")
+                    b.Property<int>("IdWallet")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("OperationDate")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("RlcWalletTicketMap");
+                    b.ToTable("RlcWalletTicket");
                 });
 
             modelBuilder.Entity("Wonder.Domain.Models.Stock", b =>

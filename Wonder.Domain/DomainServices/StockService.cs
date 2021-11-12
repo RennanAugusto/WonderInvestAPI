@@ -13,11 +13,15 @@ namespace Wonder.Domain.DomainServices
     {
         private readonly IStockRepository _stockRepo;
         private readonly IStockFavoriteRepository _favoriteStockRepo;
+        private readonly IWalletRepository _walletRepo;
+        private readonly IRlcWalletRepository _rlcWalletRepo;
 
-        public StockService(IStockRepository stockRepo, IStockFavoriteRepository favoriteRepo)
+        public StockService(IStockRepository stockRepo, IStockFavoriteRepository favoriteRepo, IWalletRepository walletRepo, IRlcWalletRepository rlcWalletRepo)
         {
             _stockRepo = stockRepo;
             _favoriteStockRepo = favoriteRepo;
+            _walletRepo = walletRepo;
+            _rlcWalletRepo = rlcWalletRepo;
         }
 
         public Stock GetStockByCode(string pCode)
@@ -60,5 +64,28 @@ namespace Wonder.Domain.DomainServices
         {
             return await this._favoriteStockRepo.GetStockFavorite(pIdUser);
         }
+
+        public async Task<bool> PostPurchase(RlcWalletTicket purchase)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<int> GetIdCarteira(string user)
+        {
+            var wallet = await this._walletRepo.GetWalletByUser(user);
+            return wallet.Id;
+        }
+
+        public async Task<RlcWalletTicket> GetLasRlcWalletTicket(int idWallet, int idTicket)
+        {
+            var rlcWallet = await this._rlcWalletRepo.GetLastRlcWalletTicket(idWallet, idTicket);
+            return rlcWallet;
+        }
+
+        public async Task<bool> InsertRlcWalletTicket(RlcWalletTicket rlcWallet)
+        {
+            return await this._rlcWalletRepo.Insert(rlcWallet);
+        }
+        
     }
 }

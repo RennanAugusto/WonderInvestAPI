@@ -7,6 +7,7 @@
     <ItemGroup>
       <Compile Remove="Class1.cs" />
       <Compile Remove="Model\**" />
+      <Compile Remove="Interfaces\Repository\IWalletRepo.cs" />
     </ItemGroup>
 
     <ItemGroup>

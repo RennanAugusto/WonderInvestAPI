@@ -32,7 +32,9 @@ namespace Wonder.Infra.Data.Context
         public Microsoft.EntityFrameworkCore.DbSet<PriceStock> PriceStocks { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<Stock> Stocks { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<ApplicationUser> Users { get; set; }
+        public Microsoft.EntityFrameworkCore.DbSet<Wallet> Wallet { get; set; }
         
+        public Microsoft.EntityFrameworkCore.DbSet<RlcWalletTicket> RlcWalletTickets { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<StockFavorites> StockFavorites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

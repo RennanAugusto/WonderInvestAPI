@@ -4,13 +4,14 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Wonder.Domain.DomainServices;
+using Wonder.Domain.Models;
 using Wonder.Service.Contracts;
 using Wonder.Service.Contracts.DTO;
 using Wonder.Service.Util;
 
 namespace Wonder.Service.Application
 {
-    public class AppStockContractsImpl: IAppStockContracts
+    public class AppStockContractsImpl:  IAppStockContracts
     {
         private readonly StockService _stockService;
 
@@ -61,6 +62,42 @@ namespace Wonder.Service.Application
             }
 
             return favoritesDTO;
+        }
+        public async Task<bool> PostPurchase(RlcWalletDTO purchase)
+        {
+            var idWallet = await this._stockService.GetIdCarteira(purchase.IdUser);
+            purchase.IdCarteira = idWallet;
+            var lastRlcWalltet = await this._stockService.GetLasRlcWalletTicket(purchase.IdCarteira, purchase.IdTicket);
+            var newRlcWallet = new RlcWalletTicket();
+            
+            newRlcWallet.Id = 0;
+            newRlcWallet.IdTicket = purchase.IdTicket;
+            newRlcWallet.IdWallet = idWallet;
+            newRlcWallet.OperationDate = purchase.OperationDate;
+            newRlcWallet.Active = true;
+            
+            if (lastRlcWalltet != null)
+            {
+                if (lastRlcWalltet.Amount < purchase.Amount && !purchase.Purchase) 
+                    throw new Exception("Não existe saldo para venda da ação");
+                else
+                {
+                    newRlcWallet.Amount = lastRlcWalltet.Amount + (purchase.Amount * (purchase.Purchase ? 1 : -1));
+                    return await this._stockService.InsertRlcWalletTicket(newRlcWallet);
+                }
+                    
+            }
+            else
+            {
+                if (!purchase.Purchase)
+                    throw new Exception("Não existe saldo para venda da ação");
+                else
+                {
+                    newRlcWallet.Amount = purchase.Amount;
+                    return await this._stockService.InsertRlcWalletTicket(newRlcWallet);
+                }
+            }
+            //ConvertWalletDTOToClass
         }
     }
 }

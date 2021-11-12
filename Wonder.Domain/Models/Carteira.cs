@@ -11,10 +11,15 @@ namespace Wonder.Domain.Models
 
     public class RlcWalletTicket : Base
     {
-        public int IdTicket { get; set; }
-        public TypeTicket TypeTicket { get; set; }
-        public int Amount { get; set; }
-        public DateTime PurchaseDate { get; set; }
-        public DateTime SalesDate { get; set; }
+        public int IdTicket { get; set; } 
+        public int IdWallet { get; set; } 
+        public DateTime OperationDate { get; set; }
+        public int Amount { get; set; } 
+        public float AveragePrice { get; set; } 
+    }
+
+    public class Releases : Base
+    {
+        
     }
 }

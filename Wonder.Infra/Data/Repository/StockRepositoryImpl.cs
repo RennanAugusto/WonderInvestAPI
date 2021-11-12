@@ -15,13 +15,16 @@ using EntityState = Microsoft.EntityFrameworkCore.EntityState;
 
 namespace Wonder.Infra.Data.Repository
 {
-    public class StockRepositoryImpl: IStockRepository
+    public class StockRepositoryImpl: BaseRepositoryImpl<Stock>, IStockRepository
     {
         private readonly PostgreSqlContext _postgreSqlContext ;
 
-        public StockRepositoryImpl(IServiceProvider provider)
+        // public StockRepositoryImpl(IServiceProvider provider)
+        // {
+        //     this._postgreSqlContext = provider.GetService<PostgreSqlContext>();
+        // }
+        public StockRepositoryImpl(PostgreSqlContext postgreSqlContext) : base(postgreSqlContext)
         {
-            this._postgreSqlContext = provider.GetService<PostgreSqlContext>();
         }
         public Stock GetByCode(string pCode)
         {
@@ -55,53 +58,6 @@ namespace Wonder.Infra.Data.Repository
             throw new NotImplementedException();
         }
 
-        public bool Insert(Stock obj)
-        {
-            try
-            {
-                _postgreSqlContext.Set<Stock>().Add(obj);
-                _postgreSqlContext.SaveChanges();
-                return true;
-            }
-            catch (IOException e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        public bool Update(Stock obj)
-        {
-            try
-            {
-                _postgreSqlContext.Entry(obj).State = EntityState.Modified;
-                _postgreSqlContext.SaveChanges();
-                return true;
-            }
-            catch (IOException e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        public bool Delete(int id)
-        {
-            try
-            {
-                _postgreSqlContext.Set<Stock>().Remove(Select(id));
-                _postgreSqlContext.SaveChanges();
-                return true;
-            }
-            catch (IOException e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        public Stock Select(int id)
-        {
-            return _postgreSqlContext.Set<Stock>().Find(id);
-        }
-
         public IList<Stock> Select()
         {
             return _postgreSqlContext.Set<Stock>().ToList();
@@ -130,5 +86,6 @@ namespace Wonder.Infra.Data.Repository
                 .Where(s => s.Code.ToUpper().StartsWith(pCodeFilter != "" && pCodeFilter != null? pCodeFilter.Trim().ToUpper(): s.Code.ToUpper()))
                 .Count();
         }
+        
     }
 }

@@ -13,5 +13,6 @@ namespace Wonder.Service.Contracts
         Task<StockPaginationDTO> GetStocksByPage(int pPage, int pCount, string pCodeFilter);
         Task<bool> PostFavoriteStock(PostFavoriteDTO postFavorite);
         Task<IList<GetFavoriteDTO>> GetFavorites(string pIdUser);
+        Task<bool> PostPurchase(RlcWalletDTO purchase);
     }
 }

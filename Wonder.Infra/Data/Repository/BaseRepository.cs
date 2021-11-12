@@ -5,6 +5,7 @@ using Wonder.Infra.Data.Context;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Wonder.Infra.Data.Repository
 {
@@ -17,12 +18,12 @@ namespace Wonder.Infra.Data.Repository
             this._postgreSqlContext = postgreSqlContext;
         }
 
-        public bool Insert(TEntity obj)
+        public async Task<bool> Insert(TEntity obj)
         {
             try
             {
-                _postgreSqlContext.Set<TEntity>().Add(obj);
-                _postgreSqlContext.SaveChanges();
+                await _postgreSqlContext.Set<TEntity>().AddAsync(obj);
+                await _postgreSqlContext.SaveChangesAsync();
                 return true;
             }
             catch (IOException e)

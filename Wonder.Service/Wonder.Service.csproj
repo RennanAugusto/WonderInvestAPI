@@ -9,6 +9,7 @@
       <Compile Remove="Contracts\IAppUserContracts.cs" />
       <Compile Remove="Contracts\DTO\DetailResult.cs" />
       <Compile Remove="Contracts\DTO\DatailResultUser.cs" />
+      <Compile Remove="Contracts\DTO\Usrs\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,6 +31,14 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Wonder.Domain\Wonder.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Contracts\DTO\Usrs\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Contracts\DTO\Usrs\**" />
     </ItemGroup>
 
 </Project>

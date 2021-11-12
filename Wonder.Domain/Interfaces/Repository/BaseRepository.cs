@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentValidation;
 using Wonder.Domain.Models;
 
@@ -6,7 +7,7 @@ namespace Wonder.Domain.Interfaces.Repository
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        bool Insert(TEntity obj);
+        Task<bool> Insert(TEntity obj);
 
         bool Update(TEntity obj);
 

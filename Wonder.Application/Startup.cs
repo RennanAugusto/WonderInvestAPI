@@ -55,6 +55,8 @@ namespace Wonder.Application
             services.AddScoped<UserService, UserService>();
             services.AddScoped<IUserRepository, UserRepositoryImpl>();
             services.AddScoped<IStockFavoriteRepository, FavoritesRepository>();
+            services.AddScoped<IWalletRepository, WalletRepository>();
+            services.AddScoped<IRlcWalletRepository, RlcWalletRepository>();
             services.AddDbContext<PostgreSqlContext>();
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<PostgreSqlContext>();

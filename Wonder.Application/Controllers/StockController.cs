@@ -1,15 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DotNurse.Injector.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Wonder.Service.Contracts;
 using Wonder.Service.Contracts.DTO;
 
@@ -55,7 +50,7 @@ namespace Wonder.Application.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Deu ruim Raryson");
+                return BadRequest("Deu ruim Raryson: " + e.Message);
             }
         }
         
@@ -66,7 +61,7 @@ namespace Wonder.Application.Controllers
         {
             try
             {
-                var idUser = User.FindFirst(ClaimTypes.Sid).Value;
+                var idUser = User.FindFirst(ClaimTypes.Sid)?.Value;
                 postFavorite.SetUser(idUser);
                 var result = await  this._stockService.PostFavoriteStock(postFavorite);
 
@@ -88,7 +83,7 @@ namespace Wonder.Application.Controllers
         {
             try
             {
-                var idUser = User.FindFirst(ClaimTypes.Sid).Value;
+                var idUser = User.FindFirst(ClaimTypes.Sid)?.Value;
                 var result = await  this._stockService.GetFavorites(idUser);
                 return Ok(Json(result));
             }
@@ -97,6 +92,28 @@ namespace Wonder.Application.Controllers
                 return BadRequest("Error: " + e.Message);
             }
         }
- 
+        
+        [Authorize]
+        [HttpPost("/Stock/PostOperation")]
+        [Produces("application/json")]
+        public async Task<IActionResult> PostOperation([FromBody] RlcWalletDTO rlcWallet)
+        {
+            try
+            {
+                var idUser = User.FindFirst(ClaimTypes.Sid)?.Value;
+                rlcWallet.IdUser = idUser;
+                var result = await this._stockService.PostPurchase(rlcWallet);
+
+                if (result)
+                    return Ok("Success");
+                else
+                    return BadRequest("Vixe");
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Error: " + e.Message);
+            }
+        }
+
     }
 }

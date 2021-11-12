@@ -8,10 +8,8 @@ namespace Wonder.Infra.Data.Mapping
     {
         public void Configure(EntityTypeBuilder<RlcWalletTicket> builder)
         {
-            builder.ToTable("RlcWalletTicketMap")
+            builder.ToTable("RlcWalletTicket")
                 .HasKey(r => r.Id);
-            builder.Property(r => r.SalesDate)
-                .HasDefaultValue(null);
         }
     }
 }
