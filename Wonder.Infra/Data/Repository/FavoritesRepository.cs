@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Wonder.Domain.Interfaces.Repository;
 using Wonder.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Wonder.Infra.Data.Context;
 
 namespace Wonder.Infra.Data.Repository
 {
     public class FavoritesRepository: BaseRepositoryImpl<StockFavorites>, IStockFavoriteRepository
     {
-        public FavoritesRepository(PostgreSqlContext postgreSqlContext) : base(postgreSqlContext)
+        public FavoritesRepository(IServiceProvider provider) : base(provider)
         {
         }
 

@@ -75,7 +75,7 @@ namespace Wonder.Service.Application
             newRlcWallet.IdWallet = idWallet;
             newRlcWallet.OperationDate = purchase.OperationDate;
             newRlcWallet.Active = true;
-            
+
             if (lastRlcWalltet != null)
             {
                 if (lastRlcWalltet.Amount < purchase.Amount && !purchase.Purchase) 
@@ -83,6 +83,8 @@ namespace Wonder.Service.Application
                 else
                 {
                     newRlcWallet.Amount = lastRlcWalltet.Amount + (purchase.Amount * (purchase.Purchase ? 1 : -1));
+                    newRlcWallet.AveragePrice = purchase.Purchase ? 
+                        newRlcWallet.GetAveragePrice(lastRlcWalltet, purchase.Price): lastRlcWalltet.AveragePrice;
                     return await this._stockService.InsertRlcWalletTicket(newRlcWallet);
                 }
                     
@@ -94,6 +96,7 @@ namespace Wonder.Service.Application
                 else
                 {
                     newRlcWallet.Amount = purchase.Amount;
+                    newRlcWallet.AveragePrice = purchase.Price;
                     return await this._stockService.InsertRlcWalletTicket(newRlcWallet);
                 }
             }

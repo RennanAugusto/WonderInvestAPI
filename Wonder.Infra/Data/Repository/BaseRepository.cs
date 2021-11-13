@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Wonder.Infra.Data.Repository
 {
@@ -13,9 +14,9 @@ namespace Wonder.Infra.Data.Repository
     {
         protected PostgreSqlContext _postgreSqlContext ;
 
-        public BaseRepositoryImpl(PostgreSqlContext postgreSqlContext)
+        public BaseRepositoryImpl(IServiceProvider provider)
         {
-            this._postgreSqlContext = postgreSqlContext;
+            this._postgreSqlContext = provider.GetService<PostgreSqlContext>();
         }
 
         public async Task<bool> Insert(TEntity obj)
