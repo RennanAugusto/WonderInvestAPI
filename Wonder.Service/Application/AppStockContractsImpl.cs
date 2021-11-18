@@ -7,6 +7,7 @@ using Wonder.Domain.DomainServices;
 using Wonder.Domain.Models;
 using Wonder.Service.Contracts;
 using Wonder.Service.Contracts.DTO;
+using Wonder.Service.Contracts.DTO.Wallet;
 using Wonder.Service.Util;
 
 namespace Wonder.Service.Application
@@ -74,6 +75,7 @@ namespace Wonder.Service.Application
             newRlcWallet.IdTicket = purchase.IdTicket;
             newRlcWallet.IdWallet = idWallet;
             newRlcWallet.OperationDate = purchase.OperationDate;
+            newRlcWallet.IsPurchase = purchase.Purchase;
             newRlcWallet.Active = true;
 
             if (lastRlcWalltet != null)
@@ -101,6 +103,13 @@ namespace Wonder.Service.Application
                 }
             }
             //ConvertWalletDTOToClass
+        }
+
+        public async Task<IList<InfoWalletDTO>> GetInfoWallet(string user)
+        {
+            var listInfoWallet = await this._stockService.GetInfoWallet(user);
+            var listInfoWalletDTO = ConvertClassToDto.ConvertListInfoWalletToDTO(listInfoWallet);
+            return listInfoWalletDTO;
         }
     }
 }

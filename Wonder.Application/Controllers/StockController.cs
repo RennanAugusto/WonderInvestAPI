@@ -94,6 +94,23 @@ namespace Wonder.Application.Controllers
         }
         
         [Authorize]
+        [HttpGet("/Stock/GetInfoWallet")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetInfoWallet()
+        {
+            try
+            {
+                var idUser = User.FindFirst(ClaimTypes.Sid)?.Value;
+                var result = await this._stockService.GetInfoWallet(idUser);
+                return Ok(Json(result));
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Error: " + e.Message);
+            }
+        }
+        
+        [Authorize]
         [HttpPost("/Stock/PostOperation")]
         [Produces("application/json")]
         public async Task<IActionResult> PostOperation([FromBody] RlcWalletDTO rlcWallet)

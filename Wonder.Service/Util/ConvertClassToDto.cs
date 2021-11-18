@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Wonder.Domain.Models;
 using Wonder.Service.Contracts.DTO;
+using Wonder.Service.Contracts.DTO.Wallet;
 
 namespace Wonder.Service.Util
 {
@@ -68,6 +69,29 @@ namespace Wonder.Service.Util
 
             return listFavoritosDTO;
         }
-        
+
+        public static IList<InfoWalletDTO> ConvertListInfoWalletToDTO(IList<InfoWallet> infoWallets)
+        {
+            IList<InfoWalletDTO> listInfoWalletDTO = new List<InfoWalletDTO>();
+
+            foreach (var info in infoWallets)
+            {
+                var infoWalletDTO = new InfoWalletDTO();
+                
+                infoWalletDTO.IdWallet = info.IdWallet;
+                infoWalletDTO.IdUser = info.IdUsualo;
+                infoWalletDTO.IdTicket = info.IdTicket;
+                infoWalletDTO.Name = info.Name;
+                infoWalletDTO.Code = info.Code;
+                infoWalletDTO.LastPrice = info.LastStockPrice;
+                infoWalletDTO.AveragePrice = info.AveragePrice;
+                infoWalletDTO.Percent = info.Percent;
+                infoWalletDTO.Amount = info.Amount;
+                infoWalletDTO.TotalStock = info.TotalStock;
+                listInfoWalletDTO.Add(infoWalletDTO);
+            }
+
+            return listInfoWalletDTO;
+        }
     }
 }

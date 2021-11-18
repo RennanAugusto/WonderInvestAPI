@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Wonder.Domain.Models;
 using Wonder.Service.Contracts.DTO;
+using Wonder.Service.Contracts.DTO.Wallet;
 
 namespace Wonder.Service.Contracts
 {
@@ -14,5 +15,6 @@ namespace Wonder.Service.Contracts
         Task<bool> PostFavoriteStock(PostFavoriteDTO postFavorite);
         Task<IList<GetFavoriteDTO>> GetFavorites(string pIdUser);
         Task<bool> PostPurchase(RlcWalletDTO purchase);
+        Task<IList<InfoWalletDTO>> GetInfoWallet(string user);
     }
 }

@@ -10,6 +10,7 @@ namespace Wonder.Service.Contracts.DTO
         public int Amount { get; set; }
         public bool Purchase { get; set; }
         public DateTime OperationDate { get; set; }
+        
         public float Price { get; set; }
     }
 }

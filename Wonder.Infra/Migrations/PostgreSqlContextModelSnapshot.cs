@@ -296,6 +296,9 @@ namespace Wonder.Infra.Migrations
                     b.Property<int>("IdWallet")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("IsPurchase")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime>("OperationDate")
                         .HasColumnType("timestamp without time zone");
 

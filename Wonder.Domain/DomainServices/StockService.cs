@@ -50,7 +50,7 @@ namespace Wonder.Domain.DomainServices
                     var stock = this._favoriteStockRepo.GetByIdUserIdStock(favoriteStock.IdWonderUsers, favoriteStock.StockId);
                     if (stock != null)
                         return true;
-                    this._favoriteStockRepo.Insert(favoriteStock);
+                    await this._favoriteStockRepo.Insert(favoriteStock);
                 }
                 return true;
             }
@@ -85,6 +85,11 @@ namespace Wonder.Domain.DomainServices
         public async Task<bool> InsertRlcWalletTicket(RlcWalletTicket rlcWallet)
         {
             return await this._rlcWalletRepo.Insert(rlcWallet);
+        }
+
+        public async Task<IList<InfoWallet>> GetInfoWallet(string user)
+        {
+            return await this._rlcWalletRepo.GetInfoWallet(user);
         }
         
     }

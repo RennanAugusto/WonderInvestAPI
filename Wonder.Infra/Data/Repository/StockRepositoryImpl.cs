@@ -3,7 +3,6 @@ using Wonder.Domain.Models;
 using Wonder.Infra.Data.Context;
 using System.Collections.Generic;
 using System;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +16,12 @@ namespace Wonder.Infra.Data.Repository
 {
     public class StockRepositoryImpl: BaseRepositoryImpl<Stock>, IStockRepository
     {
-        private readonly PostgreSqlContext _postgreSqlContext ;
 
         // public StockRepositoryImpl(IServiceProvider provider)
         // {
         //     this._postgreSqlContext = provider.GetService<PostgreSqlContext>();
         // }
-        public StockRepositoryImpl(PostgreSqlContext postgreSqlContext) : base(postgreSqlContext)
+        public StockRepositoryImpl(IServiceProvider provider) : base(provider)
         {
         }
         public Stock GetByCode(string pCode)
@@ -65,12 +63,12 @@ namespace Wonder.Infra.Data.Repository
 
         public async Task<IList<Stock>> GetStocksByPage(int pPage, int pCount, string pCodeFilter)
         {
-            var stocks =  this._postgreSqlContext.Stocks
+            var stocks =  await this._postgreSqlContext.Stocks
                 .OrderBy(s => s.Code)
                 .Where(s => s.Code.ToUpper().StartsWith(pCodeFilter != "" && pCodeFilter != null? pCodeFilter.Trim().ToUpper(): s.Code.ToUpper()))
                 .Skip(pCount * (pPage - 1))
                 .Take(pCount)
-                .ToList();
+                .ToListAsync();
             
             foreach (var stock in stocks)
             {
