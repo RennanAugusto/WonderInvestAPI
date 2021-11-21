@@ -12,7 +12,7 @@ namespace Wonder.Infra.Data.Repository
 {
     public class BaseRepositoryImpl<TEntity>: IBaseRepository<TEntity> where TEntity: class
     {
-        protected PostgreSqlContext _postgreSqlContext ;
+        protected readonly PostgreSqlContext _postgreSqlContext ;
 
         public BaseRepositoryImpl(IServiceProvider provider)
         {

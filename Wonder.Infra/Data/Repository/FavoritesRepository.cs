@@ -27,11 +27,11 @@ namespace Wonder.Infra.Data.Repository
             {
                 favorite.Stock =  await this._postgreSqlContext.Stocks.FindAsync(favorite.StockId);
                 favorite.Stock.Company = await this._postgreSqlContext.Companies.FindAsync(favorite.Stock.CompanyId);
-                favorite.Stock.PricesList =  this._postgreSqlContext.PriceStocks
+                favorite.Stock.PricesList =  await this._postgreSqlContext.PriceStocks
                     .Where(p=> p.StockId == favorite.StockId)
                     .OrderByDescending(p => p.Date)
                     .Take(2)
-                    .ToList();
+                    .ToListAsync();
             }
             return favorites;
         }
@@ -47,7 +47,6 @@ namespace Wonder.Infra.Data.Repository
             {
                 return null;
             }
-
         }
     }
 }

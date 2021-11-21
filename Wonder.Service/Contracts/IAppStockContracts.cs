@@ -15,6 +15,6 @@ namespace Wonder.Service.Contracts
         Task<bool> PostFavoriteStock(PostFavoriteDTO postFavorite);
         Task<IList<GetFavoriteDTO>> GetFavorites(string pIdUser);
         Task<bool> PostPurchase(RlcWalletDTO purchase);
-        Task<IList<InfoWalletDTO>> GetInfoWallet(string user);
+        Task<InfoWalletDTO> GetInfoWallet(string user);
     }
 }

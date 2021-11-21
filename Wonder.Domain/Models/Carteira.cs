@@ -24,46 +24,61 @@ namespace Wonder.Domain.Models
 
         public float GetAveragePrice(RlcWalletTicket lastRlcWallet, float price)
         {
+            if (lastRlcWallet.Amount <= 0)
+                return price;
+            
             var averagePrice = ((lastRlcWallet.AveragePrice * lastRlcWallet.Amount) +
                                (this.Amount * price)) / (lastRlcWallet.Amount + this.Amount);
             return averagePrice;
         }
     }
 
-    [Table("infoWallet")]
+    [Table("infowallet")]
     public class InfoWallet 
     {
-        [Column("IdInfo")]
+        [Key]
+        [Column("idinfo")]
         public int IdInfo { get; set; }
         
-        [Column("Idusualo")]
+        [Column("idusualo")]
         public string IdUsualo { get; set; }
         
-        [Column("IdWallet")]
+        [Column("idwallet")]
         public int IdWallet { get; set; }
         
-        [Column("IdTicket")]
+        [Column("idticket")]
         public int IdTicket { get; set; }
         
-        [Column("Name")]
+        [Column("name")]
         public string Name { get; set; }
         
-        [Column("Code")]
+        [Column("code")]
         public string Code { get; set; }
         
-        [Column("LastStockPrice")]
+        [Column("laststockprice")]
         public double LastStockPrice { get; set; }
         
-        [Column("AveragePrice")]
+        [Column("averageprice")]
         public double AveragePrice { get; set; }
         
-        [Column("Percent")]
+        [Column("percent")]
         public double Percent { get; set; }
         
-        [Column("Amount")] 
+        [Column("amount")] 
         public int Amount { get; set; }
         
-        [Column("TotalStock")]
+        [Column("totalstock")]
         public double TotalStock { get; set; }
+        
+        [Column("totalvariation")]
+        
+        public double TotalVariation { get; set; }
+        
+        [Column("logobase64")]
+        public string CompanyLogo { get; set; }
+        
+        [Column("lastoperation")]
+        public string LastOperation { get; set; }
+        
     }
 }

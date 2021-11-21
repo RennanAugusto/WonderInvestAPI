@@ -83,7 +83,7 @@ namespace Wonder.Service.Application
                 if (lastRlcWalltet.Amount < purchase.Amount && !purchase.Purchase) 
                     throw new Exception("Não existe saldo para venda da ação");
                 else
-                {
+                { 
                     newRlcWallet.Amount = lastRlcWalltet.Amount + (purchase.Amount * (purchase.Purchase ? 1 : -1));
                     newRlcWallet.AveragePrice = purchase.Purchase ? 
                         newRlcWallet.GetAveragePrice(lastRlcWalltet, purchase.Price): lastRlcWalltet.AveragePrice;
@@ -105,7 +105,7 @@ namespace Wonder.Service.Application
             //ConvertWalletDTOToClass
         }
 
-        public async Task<IList<InfoWalletDTO>> GetInfoWallet(string user)
+        public async Task<InfoWalletDTO> GetInfoWallet(string user)
         {
             var listInfoWallet = await this._stockService.GetInfoWallet(user);
             var listInfoWalletDTO = ConvertClassToDto.ConvertListInfoWalletToDTO(listInfoWallet);

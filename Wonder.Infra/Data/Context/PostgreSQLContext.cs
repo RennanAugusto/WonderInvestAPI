@@ -33,10 +33,8 @@ namespace Wonder.Infra.Data.Context
         public Microsoft.EntityFrameworkCore.DbSet<Stock> Stocks { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<ApplicationUser> Users { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<Wallet> Wallet { get; set; }
-        
         public Microsoft.EntityFrameworkCore.DbSet<RlcWalletTicket> RlcWalletTickets { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<StockFavorites> StockFavorites { get; set; }
-        
         public Microsoft.EntityFrameworkCore.DbSet<InfoWallet> InfoWallets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -49,13 +47,7 @@ namespace Wonder.Infra.Data.Context
             builder.Entity<Wallet>(new WalletMap().Configure);
             builder.Entity<RlcWalletTicket>(new RlcWalletTicketMap().Configure);
             builder.Entity<StockFavorites>(new FavoritesMap().Configure);
-
-            builder.Entity<InfoWallet>(b =>
-            {
-                b.ToSqlQuery("SELECT I.IdInfo, I.IdUsualo, I.IdWallet, I.IdTicket, I.Code, I.LastStockPrice, I.AveragePrice, I.Percent, I.TotalStock, Name FROM InfoWallet AS I")
-                    .HasNoKey();
-            });
-            
+            builder.Entity<InfoWallet>(new InfoWalletMap().Configure);
         }
     }
 }

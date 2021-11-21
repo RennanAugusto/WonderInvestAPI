@@ -70,28 +70,35 @@ namespace Wonder.Service.Util
             return listFavoritosDTO;
         }
 
-        public static IList<InfoWalletDTO> ConvertListInfoWalletToDTO(IList<InfoWallet> infoWallets)
+        public static InfoWalletDTO ConvertListInfoWalletToDTO(IList<InfoWallet> infoWallets)
         {
-            IList<InfoWalletDTO> listInfoWalletDTO = new List<InfoWalletDTO>();
-
+            InfoWalletDTO infoWallet = new InfoWalletDTO();
             foreach (var info in infoWallets)
             {
-                var infoWalletDTO = new InfoWalletDTO();
+                var infoTicketDTO = new InfoTicketDTO();
                 
-                infoWalletDTO.IdWallet = info.IdWallet;
-                infoWalletDTO.IdUser = info.IdUsualo;
-                infoWalletDTO.IdTicket = info.IdTicket;
-                infoWalletDTO.Name = info.Name;
-                infoWalletDTO.Code = info.Code;
-                infoWalletDTO.LastPrice = info.LastStockPrice;
-                infoWalletDTO.AveragePrice = info.AveragePrice;
-                infoWalletDTO.Percent = info.Percent;
-                infoWalletDTO.Amount = info.Amount;
-                infoWalletDTO.TotalStock = info.TotalStock;
-                listInfoWalletDTO.Add(infoWalletDTO);
+                infoTicketDTO.IdWallet = info.IdWallet;
+                infoTicketDTO.IdUser = info.IdUsualo;
+                infoTicketDTO.IdTicket = info.IdTicket;
+                infoTicketDTO.Name = info.Code;
+                infoTicketDTO.CompanyName = info.Name;
+                infoTicketDTO.LastPrice = info.LastStockPrice;
+                infoTicketDTO.AveragePrice = info.AveragePrice;
+                infoTicketDTO.Percent = info.Percent;
+                infoTicketDTO.Amount = info.Amount;
+                infoTicketDTO.TotalStock = info.TotalStock;
+                infoTicketDTO.TotalVariation = info.TotalVariation;
+                infoTicketDTO.CompanyLogo = info.CompanyLogo;
+                infoTicketDTO.LastOperation = info.LastOperation;
+                infoWallet.ListInfoTicket.Add(infoTicketDTO);
+                infoWallet.TotalTicketsValue += infoTicketDTO.LastPrice * infoTicketDTO.Amount;
+                infoWallet.TotalWalletValue += infoTicketDTO.AveragePrice * infoTicketDTO.Amount;
             }
 
-            return listInfoWalletDTO;
+            infoWallet.PercentWallet =
+                (( infoWallet.TotalTicketsValue - infoWallet.TotalWalletValue) / infoWallet.TotalWalletValue) * 100;
+
+            return infoWallet;
         }
     }
 }

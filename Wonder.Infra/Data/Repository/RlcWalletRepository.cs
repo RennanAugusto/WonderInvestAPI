@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Wonder.Domain.Interfaces.Repository;
@@ -27,10 +28,9 @@ namespace Wonder.Infra.Data.Repository
 
         public async Task<IList<InfoWallet>> GetInfoWallet(string user)
         {
-            var infoWallets = this._postgreSqlContext.InfoWallets
-                .FromSqlRaw(String.Format("SELECT I.IdInfo, I.IdUsualo, I.IdWallet, I.IdTicket, I.Code, " + 
-                                          "I.LastStockPrice, I.Amount, I.AveragePrice, I.Percent, I.TotalStock, I.Name FROM InfoWallet AS I WHERE I.IdUsualo = '{0}'", user))
-                .ToList();
+            var infoWallets = await this._postgreSqlContext.InfoWallets
+                .Where(i=> i.IdUsualo == user)
+                .ToListAsync();
             
             return infoWallets;
         }
