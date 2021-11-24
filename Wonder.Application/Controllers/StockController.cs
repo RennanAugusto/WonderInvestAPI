@@ -131,6 +131,24 @@ namespace Wonder.Application.Controllers
                 return BadRequest("Error: " + e.Message);
             }
         }
+        
+        [Authorize]
+        [HttpGet("/Stock/StockProgression")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetStockProgression(int stockId, string type)
+        {
+            try
+            {
+                var result =
+                    await this._stockService.GetStockProgression(stockId,
+                        type);
+                return Ok(Json(result));
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Error: " + e.Message);
+            }
+        }
 
     }
 }

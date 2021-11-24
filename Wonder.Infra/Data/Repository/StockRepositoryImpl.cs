@@ -84,6 +84,15 @@ namespace Wonder.Infra.Data.Repository
                 .Where(s => s.Code.ToUpper().StartsWith(pCodeFilter != "" && pCodeFilter != null? pCodeFilter.Trim().ToUpper(): s.Code.ToUpper()))
                 .Count();
         }
-        
+
+        public async Task<IList<StockProgression>> GetStockProgression(int stockId, string type)
+        {
+            var listStockProgression = await this._postgreSqlContext.StockProgressions
+                .Where(s => s.StockId == stockId && s.TypeProgression == type && s.Date != null)
+                .OrderBy(s=> s.Date)
+                .ToListAsync();
+            
+            return listStockProgression;
+        }
     }
 }

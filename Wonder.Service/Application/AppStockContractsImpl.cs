@@ -111,5 +111,11 @@ namespace Wonder.Service.Application
             var listInfoWalletDTO = ConvertClassToDto.ConvertListInfoWalletToDTO(listInfoWallet);
             return listInfoWalletDTO;
         }
+
+        public async Task<IList<StockProgressionDTO>> GetStockProgression(int stockId, string type)
+        {
+            var stockProgression = await this._stockService.GetStockProgression(stockId, type);
+            return ConvertClassToDto.ConvertListProgressionToListDTO(stockProgression);
+        }
     }
 }

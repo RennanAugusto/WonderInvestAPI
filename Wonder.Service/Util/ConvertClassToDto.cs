@@ -100,5 +100,25 @@ namespace Wonder.Service.Util
 
             return infoWallet;
         }
+
+        public static IList<StockProgressionDTO> ConvertListProgressionToListDTO(IList<StockProgression> listStockProgression)
+        {
+            var listProgressionDTO = new List<StockProgressionDTO>();
+
+            foreach (var item in listStockProgression)
+            {
+                var stockProgressionDTO = new StockProgressionDTO();
+                stockProgressionDTO.Code = item.Code;
+                stockProgressionDTO.Date = item.Date;
+                stockProgressionDTO.Description = item.Description.Trim();
+                stockProgressionDTO.Legend = item.Legend;
+                stockProgressionDTO.Price = item.Price;
+                stockProgressionDTO.StockId = item.StockId;
+                stockProgressionDTO.TypeProgression = item.TypeProgression;
+                listProgressionDTO.Add(stockProgressionDTO);
+            }
+
+            return listProgressionDTO;
+        }
     }
 }

@@ -91,6 +91,12 @@ namespace Wonder.Domain.DomainServices
         {
             return await this._rlcWalletRepo.GetInfoWallet(user);
         }
+
+        public async Task<IList<StockProgression>> GetStockProgression(int stockId, string type)
+        {
+            var listProgression = await this._stockRepo.GetStockProgression(stockId, type);
+            return listProgression;
+        }
         
     }
 }

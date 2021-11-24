@@ -36,6 +36,8 @@ namespace Wonder.Infra.Data.Context
         public Microsoft.EntityFrameworkCore.DbSet<RlcWalletTicket> RlcWalletTickets { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<StockFavorites> StockFavorites { get; set; }
         public Microsoft.EntityFrameworkCore.DbSet<InfoWallet> InfoWallets { get; set; }
+        
+        public Microsoft.EntityFrameworkCore.DbSet<StockProgression> StockProgressions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -48,6 +50,7 @@ namespace Wonder.Infra.Data.Context
             builder.Entity<RlcWalletTicket>(new RlcWalletTicketMap().Configure);
             builder.Entity<StockFavorites>(new FavoritesMap().Configure);
             builder.Entity<InfoWallet>(new InfoWalletMap().Configure);
+            builder.Entity<StockProgression>(new StockProgressionMap().Configure);
         }
     }
 }
