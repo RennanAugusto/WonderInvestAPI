@@ -95,8 +95,11 @@ namespace Wonder.Service.Util
                 infoWallet.TotalWalletValue += infoTicketDTO.AveragePrice * infoTicketDTO.Amount;
             }
 
-            infoWallet.PercentWallet =
-                (( infoWallet.TotalTicketsValue - infoWallet.TotalWalletValue) / infoWallet.TotalWalletValue) * 100;
+            if (infoWallet.ListInfoTicket.Count <= 0)
+                infoWallet.PercentWallet = 0;
+            else
+                infoWallet.PercentWallet =
+                     (( infoWallet.TotalTicketsValue - infoWallet.TotalWalletValue) / infoWallet.TotalWalletValue) * 100;
 
             return infoWallet;
         }
